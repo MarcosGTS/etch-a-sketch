@@ -1,9 +1,13 @@
+const BACKGROUND_COLOR = "white";
+
 let sizeInput = document.querySelector(".size");
 let clearButton = document.querySelector(".clear");
 
 sizeInput.addEventListener("change", () => {
     createCanvas(sizeInput.value);
 })
+
+clearButton.addEventListener("click", clearCanvas)
 
 function createCanvas(size) {
     const canvas = document.querySelector(".canvas");
@@ -16,6 +20,9 @@ function createCanvas(size) {
         let pixel = createPixel(pixelDimession);
 
         pixel.addEventListener("mouseover", paintPixel);
+        //prevent draging
+        pixel.ondragstart = () => false;
+
         canvas.appendChild(pixel);
     }
 }
@@ -32,8 +39,17 @@ function createPixel(size) {
 
 function paintPixel(e) {
     // if mouse is pressed
+
     if (e.buttons == 1)
-        this.style.backgroundColor = "black";
+        this.style.backgroundColor = 'black';
+}
+
+function clearCanvas() {
+    let pixels = document.querySelectorAll(".pixel");
+
+    for(let pixel of pixels) {
+        pixel.style.backgroundColor = BACKGROUND_COLOR;
+    }
 }
 
 createCanvas(16);
