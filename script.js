@@ -20,6 +20,7 @@ function createCanvas(size) {
         let pixel = createPixel(pixelDimession);
 
         pixel.addEventListener("mouseover", paintPixel);
+        pixel.addEventListener("mousedown", paintPixel);
         //prevent draging
         pixel.ondragstart = () => false;
 
@@ -39,8 +40,9 @@ function createPixel(size) {
 
 function paintPixel(e) {
     // if mouse is pressed
-
-    if (e.buttons == 1)
+    if (e.type == "mousedown")
+        this.style.backgroundColor = 'black';
+    else if (e.buttons == 1)
         this.style.backgroundColor = 'black';
 }
 
@@ -53,3 +55,9 @@ function clearCanvas() {
 }
 
 createCanvas(16);
+
+document.addEventListener("click" ,(e) => {
+    let {target} = e;
+
+    console.log([...target.classList].includes("pixel"))
+})
