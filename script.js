@@ -78,20 +78,31 @@ function pickColor(e) {
     let {target} = e
     if (isPixel(target))
     {
+        let {backgroundColor} = target.style;
+
         
-        colorInput.value = target.style.backgroundColor;
-        currentColor = target.style.backgroundColor;
+        colorInput.value = rgbToHex(backgroundColor);
+        currentColor = backgroundColor;
         toolsState.pencilState = "PAINT";
         console.log(currentColor)
         
-    }
-
-    
+    }   
 }
 
 function isPixel(el) {
     return [...el.classList].includes("pixel");
 }
+
+function rgbToHex(rgb) {
+    let colors = rgb.match(/\d+/g);
+    let hexColor = "#"
+    for (let color of colors)
+        hexColor += (+color).toString(16).padStart(2, 0);
+
+    console.log(hexColor)
+    return hexColor;
+}
+
 
 createCanvas(16);
 
