@@ -1,13 +1,27 @@
-const BACKGROUND_COLOR = "white";
-let currentColor = "black";
+const BACKGROUND_COLOR = "#ffffff";
+let currentColor = "#000000";
+
+const toolsState = {
+    currentColor: "#000000",
+    STATES: ["PAINT", "PICK"],
+    pencilState: "PAINT",
+}
 
 let sizeInput = document.querySelector(".size");
 let clearButton = document.querySelector(".clear");
 let colorInput = document.querySelector(".crr-color");
+let colorPicker = document.querySelector(".color-picker");
 
 sizeInput.addEventListener("change", () => createCanvas(sizeInput.value));
 clearButton.addEventListener("click", clearCanvas);
 colorInput.addEventListener("change", changeColor);
+//pick color
+colorPicker.addEventListener("click", () => {
+    toolsState.pencilState = "PICK";
+    console.log(toolsState.pencilState);
+});
+
+document.addEventListener("click" ,pickColor);
 
 function createCanvas(size) {
     const canvas = document.querySelector(".canvas");
@@ -32,6 +46,7 @@ function createPixel(size) {
     let pixel = document.createElement("div");
     pixel.classList.add("pixel");
 
+    pixel.style.backgroundColor = BACKGROUND_COLOR;
     pixel.style.width = `${size}px`;
     pixel.style.height = `${size}px`;
 
@@ -40,8 +55,10 @@ function createPixel(size) {
 
 function paintPixel(e) {
     // if mouse is pressed
-    if (e.type == "mousedown" || e.buttons == 1)
+    if (toolsState.pencilState === "PAINT" && (e.type == "mousedown" || e.buttons == 1)){
         this.style.backgroundColor = currentColor;
+    }
+        
 }
 
 function clearCanvas() {
@@ -56,9 +73,25 @@ function changeColor() {
     currentColor = this.value;
 }
 
+function pickColor(e) {
+    //verificar se e um pixel
+    let {target} = e
+    if (isPixel(target))
+    {
+        
+        colorInput.value = target.style.backgroundColor;
+        currentColor = target.style.backgroundColor;
+        toolsState.pencilState = "PAINT";
+        console.log(currentColor)
+        
+    }
+
+    
+}
+
+function isPixel(el) {
+    return [...el.classList].includes("pixel");
+}
+
 createCanvas(16);
 
-document.addEventListener("click" ,(e) => {
-    let {target} = e;
-    console.log([...target.classList].includes("pixel"))
-})
