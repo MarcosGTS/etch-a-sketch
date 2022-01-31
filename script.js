@@ -1,13 +1,13 @@
 const BACKGROUND_COLOR = "white";
+let currentColor = "black";
 
 let sizeInput = document.querySelector(".size");
 let clearButton = document.querySelector(".clear");
+let colorInput = document.querySelector(".crr-color");
 
-sizeInput.addEventListener("change", () => {
-    createCanvas(sizeInput.value);
-})
-
-clearButton.addEventListener("click", clearCanvas)
+sizeInput.addEventListener("change", () => createCanvas(sizeInput.value));
+clearButton.addEventListener("click", clearCanvas);
+colorInput.addEventListener("change", changeColor);
 
 function createCanvas(size) {
     const canvas = document.querySelector(".canvas");
@@ -40,10 +40,8 @@ function createPixel(size) {
 
 function paintPixel(e) {
     // if mouse is pressed
-    if (e.type == "mousedown")
-        this.style.backgroundColor = 'black';
-    else if (e.buttons == 1)
-        this.style.backgroundColor = 'black';
+    if (e.type == "mousedown" || e.buttons == 1)
+        this.style.backgroundColor = currentColor;
 }
 
 function clearCanvas() {
@@ -54,10 +52,13 @@ function clearCanvas() {
     }
 }
 
+function changeColor() {
+    currentColor = this.value;
+}
+
 createCanvas(16);
 
 document.addEventListener("click" ,(e) => {
     let {target} = e;
-
     console.log([...target.classList].includes("pixel"))
 })
