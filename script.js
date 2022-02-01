@@ -89,9 +89,7 @@ function pickColor(e) {
         
         colorInput.value = rgbToHex(backgroundColor);
         currentColor = backgroundColor;
-        toolsState.pencilState = "PAINT";
-        console.log(currentColor)
-        
+        toolsState.pencilState = "PAINT";   
     }   
 }
 
@@ -105,7 +103,6 @@ function rgbToHex(rgb) {
     for (let color of colors)
         hexColor += (+color).toString(16).padStart(2, 0);
 
-    console.log(hexColor)
     return hexColor;
 }
 
