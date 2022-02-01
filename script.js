@@ -13,6 +13,8 @@ let colorInput = document.querySelector(".crr-color");
 let colorPicker = document.querySelector(".color-picker");
 
 sizeInput.addEventListener("change", () => createCanvas(sizeInput.value));
+sizeInput.addEventListener("mousemove", displaySize);
+
 clearButton.addEventListener("click", clearCanvas);
 colorInput.addEventListener("change", changeColor);
 //pick color
@@ -53,6 +55,11 @@ function createPixel(size) {
     return pixel;
 }
 
+function displaySize() {
+    let sizeValue = document.querySelector('.size-value');
+    sizeValue.textContent = `${this.value} X ${this.value}`;
+}
+
 function paintPixel(e) {
     // if mouse is pressed
     if (toolsState.pencilState === "PAINT" && (e.type == "mousedown" || e.buttons == 1)){
@@ -79,7 +86,6 @@ function pickColor(e) {
     if (isPixel(target))
     {
         let {backgroundColor} = target.style;
-
         
         colorInput.value = rgbToHex(backgroundColor);
         currentColor = backgroundColor;
@@ -102,7 +108,6 @@ function rgbToHex(rgb) {
     console.log(hexColor)
     return hexColor;
 }
-
 
 createCanvas(16);
 
