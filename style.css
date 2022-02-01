@@ -1,17 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 * {
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    background-color: #E7E6E2;
 }
 
 .canvas {
     display: flex;
     flex-wrap: wrap;
 
-    width: 400px;
-    height: 400px;
+    width: 550px;
+    height: 550px;
 
-    border: 2px solid black;
+    border: 1rem solid #6b705c;
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px rgba(0,0,0, 0.6);
 }
 
 .pixel {
     border: 1px solid rgba(0,0,0, 0.1);
+}
+
+.tools {
+    display: flex;
+
+    justify-content: space-around;
+    align-items: stretch;
+
+    width: 550px;
+    padding: 16px;
+    margin: 16px;
+
+    background-color: #6b705c;
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px rgba(0,0,0, 0.6);
+}
+
+.color-picker img {
+    width: 40px;
+    height: auto;
+}
+
+.tools > div {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.crr-color {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+}
+
+.crr-color::-webkit-color-swatch {
+    width: 50px;
+    border: none;
+    border-radius: 100px;
+}
+
+.size-value {
+    text-align: center;
+}
+
+button {
+    width: 55px;
+    height: 55px;
+
+    background-color: whitesmoke;
+    color: black;
+
+    border: none;
+    border-radius: 5px;
+
+    font-size: 1rem;
+    font-weight: bold;  
 }
