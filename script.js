@@ -3,7 +3,7 @@ let currentColor = "#000000";
 
 const toolsState = {
     currentColor: "#000000",
-    STATES: ["PAINT", "PICK"],
+    STATES: ["PAINT", "PICK", "FILL"],
     pencilState: "PAINT",
 }
 
@@ -11,19 +11,28 @@ let sizeInput = document.querySelector(".size");
 let clearButton = document.querySelector(".clear");
 let colorInput = document.querySelector(".crr-color");
 let colorPicker = document.querySelector(".color-picker");
+let bucketFillBtn = document.querySelector(".fill");
 
 sizeInput.addEventListener("change", () => createCanvas(sizeInput.value));
 sizeInput.addEventListener("mousemove", displaySize);
 
 clearButton.addEventListener("click", clearCanvas);
 colorInput.addEventListener("change", changeColor);
+
 //pick color
 colorPicker.addEventListener("click", () => {
     toolsState.pencilState = "PICK";
-    console.log(toolsState.pencilState);
 });
-
 document.addEventListener("click" ,pickColor);
+
+//fill bucket
+bucketFillBtn.addEventListener("click", () => {
+    toolsState.pencilState = "FILL";
+})
+
+document.addEventListener("click" ,(e) => {
+    if (toolsState.pencilState == "FILL") fillShape(e.target);
+});
 
 function createCanvas(size) {
     const canvas = document.querySelector(".canvas");
@@ -68,6 +77,47 @@ function paintPixel(e) {
         
 }
 
+function fillShape(target) {
+    if (!isPixel(target) || toolsState.pencilState != "FILL") return;
+
+    const canvas = document.querySelector(".canvas");
+    const pixels =  Array.from(document.querySelectorAll(".pixel"));
+    const dimession = pixels.length ** (1/2);
+    const targetIndex =  pixels.indexOf(target, canvas);
+    const selectedColor = rgbToHex(target.style.backgroundColor);
+
+    function paintRecursion(x, y, color, selectedColor) {
+        
+        const currPixel = pixels[x + y * dimession];
+    
+        // Is a pixel
+        if (!isPixel(currPixel)) return;
+        
+        // Should pixel be painted 
+        const currPixelColor =  rgbToHex(currPixel.style.backgroundColor);
+        if (currPixelColor == color) return;
+        if (currPixelColor != selectedColor) return;
+    
+        // Update pixel's color
+        currPixel.style.backgroundColor = color;
+        
+        //spread to adjacent pixels
+        paintRecursion(x, y-1, color, selectedColor);
+        paintRecursion(x, y+1, color, selectedColor);
+        paintRecursion(x-1, y, color, selectedColor);
+        paintRecursion(x+1, y, color, selectedColor);
+    }
+    
+    const x = targetIndex % dimession;
+    const y = Math.floor(targetIndex / dimession);
+    
+    paintRecursion(x, y, currentColor, selectedColor);
+
+    toolsState.pencilState = "PAINT";
+}
+
+
+
 function clearCanvas() {
     let pixels = document.querySelectorAll(".pixel");
 
@@ -83,7 +133,7 @@ function changeColor() {
 function pickColor(e) {
     //verificar se e um pixel
     let {target} = e
-    if (isPixel(target))
+    if (isPixel(target) && toolsState.pencilState === "PICK")
     {
         let {backgroundColor} = target.style;
         
@@ -94,6 +144,7 @@ function pickColor(e) {
 }
 
 function isPixel(el) {
+    if (!el) return false;
     return [...el.classList].includes("pixel");
 }
 
